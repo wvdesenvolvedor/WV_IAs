@@ -175,7 +175,6 @@
       gap: 10px;
     }
 
-    /* Para tablets e celulares grandes, duas colunas ficam ok */
     @media (min-width: 640px) {
       .grid {
         grid-template-columns: 1fr 1fr;
@@ -313,6 +312,50 @@
       background: rgba(255, 255, 255, .06);
     }
 
+    /* Footer */
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      padding: 16px 10px;
+      background: rgba(255, 255, 255, .03);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, .06);
+      backdrop-filter: blur(4px);
+    }
+
+    .footer p {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .08);
+      transition: all .15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-links a:active {
+      background: rgba(255, 255, 255, .08);
+      transform: scale(.97);
+    }
+
     /* Modal */
     .modal-backdrop {
       position: fixed;
@@ -434,7 +477,6 @@
       border: 1px solid rgba(255, 255, 255, .06);
     }
 
-    /* Ajustes para telas muito pequenas */
     @media (max-width: 420px) {
       body {
         padding: 8px 4px calc(8px + var(--safe-bottom));
@@ -445,7 +487,6 @@
         display: inline-block;
       }
 
-      /* Garantir que botões importantes não sumam */
       #btnExport,
       #btnImport,
       #btnReset {
@@ -484,7 +525,6 @@
       }
     }
 
-    /* Melhorias para gestos */
     .card,
     button,
     .tab,
@@ -549,6 +589,14 @@
 
     <section class="grid" id="grid" aria-label="Lista de IAs"></section>
     <div class="drag-info">🖱️ Arraste os cards para reordenar</div>
+    
+    <footer class="footer">
+      <p>Hub de atalhos para Inteligência Artificial. Reúne links diretos para as principais IAs disponíveis.</p>
+      <div class="footer-links">
+        <a href="https://instagram.com/nossocanal_pego" target="_blank" rel="noopener">📲 @nossocanal_pego</a>
+        <a href="https://youtube.com/@nossocanal_pego" target="_blank" rel="noopener">▶️ @nossocanal_pego</a>
+      </div>
+    </footer>
   </main>
 
   <!-- Modal -->
@@ -584,38 +632,43 @@
     (function(){
       "use strict";
 
-      const STORAGE_KEY = "WV_IAS_LIST_SINGLEHTML_V3";
+      const STORAGE_KEY = "WV_IAS_LIST_SINGLEHTML_V4";
 
       const DEFAULT_ITEMS = [
         {id: crypto.randomUUID(), name:"ChatGPT", url:"https://chatgpt.com/", cat:"texto", color:"#10b981", icon:"GPT"},
         {id: crypto.randomUUID(), name:"DeepSeek", url:"https://chat.deepseek.com/", cat:"codigo", color:"#f97316", icon:"DS"},
         {id: crypto.randomUUID(), name:"Grok", url:"https://grok.com/", cat:"texto", color:"#ef4444", icon:"X"},
-        {id: crypto.randomUUID(), name:"Google AI Studio", url:"https://aistudio.google.com/prompts/new_chat", cat:"codigo", color:"#00d2ff", icon:"AI"},
-        {id: crypto.randomUUID(), name:"Gemini", url:"https://gemini.google.com/app", cat:"texto", color:"#7c3aed", icon:"G"},
-        {id: crypto.randomUUID(), name:"Claude", url:"https://claude.ai", cat:"texto", color:"#d97706", icon:"CL"},
-        {id: crypto.randomUUID(), name:"Microsoft Copilot", url:"https://copilot.microsoft.com", cat:"texto", color:"#00a4ef", icon:"CP"},
-        {id: crypto.randomUUID(), name:"Perplexity AI", url:"https://perplexity.ai", cat:"texto", color:"#3b82f6", icon:"PX"},
-        {id: crypto.randomUUID(), name:"HuggingChat", url:"https://huggingface.co/chat", cat:"texto", color:"#f9d423", icon:"HC"},
-        {id: crypto.randomUUID(), name:"Poe", url:"https://poe.com", cat:"texto", color:"#6366f1", icon:"PO"},
-        {id: crypto.randomUUID(), name:"You.com", url:"https://you.com", cat:"texto", color:"#06b6d4", icon:"YO"},
-        {id: crypto.randomUUID(), name:"Blackbox AI", url:"https://www.blackbox.ai", cat:"codigo", color:"#1e293b", icon:"BB"},
-        {id: crypto.randomUUID(), name:"Phind", url:"https://www.phind.com", cat:"codigo", color:"#a855f7", icon:"PH"},
-        {id: crypto.randomUUID(), name:"Codeium", url:"https://codeium.com", cat:"codigo", color:"#22c55e", icon:"CD"},
-        {id: crypto.randomUUID(), name:"Tabnine", url:"https://www.tabnine.com", cat:"codigo", color:"#ec489a", icon:"TN"},
+        {id: crypto.randomUUID(), name:"Google AI Studio", url:"https://aistudio.google.com/", cat:"codigo", color:"#00d2ff", icon:"AI"},
+        {id: crypto.randomUUID(), name:"Gemini", url:"https://gemini.google.com/", cat:"texto", color:"#7c3aed", icon:"G"},
+        {id: crypto.randomUUID(), name:"Claude", url:"https://claude.ai/", cat:"texto", color:"#d97706", icon:"CL"},
+        {id: crypto.randomUUID(), name:"Microsoft Copilot", url:"https://copilot.microsoft.com/", cat:"texto", color:"#00a4ef", icon:"CP"},
+        {id: crypto.randomUUID(), name:"Perplexity AI", url:"https://www.perplexity.ai/", cat:"texto", color:"#3b82f6", icon:"PX"},
+        {id: crypto.randomUUID(), name:"HuggingChat", url:"https://huggingface.co/chat/", cat:"texto", color:"#f9d423", icon:"HC"},
+        {id: crypto.randomUUID(), name:"Poe", url:"https://poe.com/", cat:"texto", color:"#6366f1", icon:"PO"},
+        {id: crypto.randomUUID(), name:"You.com", url:"https://you.com/", cat:"texto", color:"#06b6d4", icon:"YO"},
+        {id: crypto.randomUUID(), name:"Blackbox AI", url:"https://www.blackbox.ai/", cat:"codigo", color:"#1e293b", icon:"BB"},
+        {id: crypto.randomUUID(), name:"Phind", url:"https://www.phind.com/", cat:"codigo", color:"#a855f7", icon:"PH"},
+        {id: crypto.randomUUID(), name:"Codeium", url:"https://codeium.com/", cat:"codigo", color:"#22c55e", icon:"CD"},
+        {id: crypto.randomUUID(), name:"Tabnine", url:"https://www.tabnine.com/", cat:"codigo", color:"#ec489a", icon:"TN"},
         {id: crypto.randomUUID(), name:"Cody", url:"https://sourcegraph.com/cody", cat:"codigo", color:"#f97316", icon:"CY"},
-        {id: crypto.randomUUID(), name:"Replit AI", url:"https://replit.com", cat:"codigo", color:"#6366f1", icon:"RP"},
-        {id: crypto.randomUUID(), name:"Leonardo AI", url:"https://leonardo.ai", cat:"imagem", color:"#a855f7", icon:"LE"},
-        {id: crypto.randomUUID(), name:"Playground AI", url:"https://playgroundai.com", cat:"imagem", color:"#14b8a6", icon:"PG"},
-        {id: crypto.randomUUID(), name:"Krea AI", url:"https://krea.ai", cat:"imagem", color:"#f97316", icon:"KR"},
-        {id: crypto.randomUUID(), name:"Ideogram", url:"https://ideogram.ai", cat:"imagem", color:"#ec489a", icon:"ID"},
-        {id: crypto.randomUUID(), name:"Clipdrop", url:"https://clipdrop.co", cat:"imagem", color:"#3b82f6", icon:"CD"},
-        {id: crypto.randomUUID(), name:"Remove.bg", url:"https://remove.bg", cat:"imagem", color:"#8b5cf6", icon:"BG"},
-        {id: crypto.randomUUID(), name:"Notion AI", url:"https://notion.so", cat:"util", color:"#000000", icon:"NT"},
-        {id: crypto.randomUUID(), name:"Grammarly", url:"https://grammarly.com", cat:"util", color:"#15c39a", icon:"GM"},
-        {id: crypto.randomUUID(), name:"Otter.ai", url:"https://otter.ai", cat:"util", color:"#0891b2", icon:"OT"},
-        {id: crypto.randomUUID(), name:"Canva Magic", url:"https://canva.com", cat:"util", color:"#00c4cc", icon:"CV"},
-        {id: crypto.randomUUID(), name:"Tome", url:"https://tome.app", cat:"util", color:"#8b5cf6", icon:"TM"},
-        {id: crypto.randomUUID(), name:"Gamma", url:"https://gamma.app", cat:"util", color:"#f59e0b", icon:"GA"}
+        {id: crypto.randomUUID(), name:"Replit AI", url:"https://replit.com/", cat:"codigo", color:"#6366f1", icon:"RP"},
+        {id: crypto.randomUUID(), name:"Leonardo AI", url:"https://leonardo.ai/", cat:"imagem", color:"#a855f7", icon:"LE"},
+        {id: crypto.randomUUID(), name:"Playground AI", url:"https://playground.com/", cat:"imagem", color:"#14b8a6", icon:"PG"},
+        {id: crypto.randomUUID(), name:"Krea AI", url:"https://www.krea.ai/", cat:"imagem", color:"#f97316", icon:"KR"},
+        {id: crypto.randomUUID(), name:"Ideogram", url:"https://ideogram.ai/", cat:"imagem", color:"#ec489a", icon:"ID"},
+        {id: crypto.randomUUID(), name:"Clipdrop", url:"https://clipdrop.co/", cat:"imagem", color:"#3b82f6", icon:"CD"},
+        {id: crypto.randomUUID(), name:"Remove.bg", url:"https://www.remove.bg/", cat:"imagem", color:"#8b5cf6", icon:"BG"},
+        {id: crypto.randomUUID(), name:"Notion AI", url:"https://www.notion.so/product/ai", cat:"util", color:"#000000", icon:"NT"},
+        {id: crypto.randomUUID(), name:"Grammarly", url:"https://www.grammarly.com/", cat:"util", color:"#15c39a", icon:"GM"},
+        {id: crypto.randomUUID(), name:"Otter.ai", url:"https://otter.ai/", cat:"util", color:"#0891b2", icon:"OT"},
+        {id: crypto.randomUUID(), name:"Canva Magic", url:"https://www.canva.com/", cat:"util", color:"#00c4cc", icon:"CV"},
+        {id: crypto.randomUUID(), name:"Tome", url:"https://tome.app/", cat:"util", color:"#8b5cf6", icon:"TM"},
+        {id: crypto.randomUUID(), name:"Gamma", url:"https://gamma.app/", cat:"util", color:"#f59e0b", icon:"GA"},
+        {id: crypto.randomUUID(), name:"Midjourney", url:"https://www.midjourney.com/", cat:"imagem", color:"#3b82f6", icon:"MJ"},
+        {id: crypto.randomUUID(), name:"DALL·E", url:"https://openai.com/dall-e-3", cat:"imagem", color:"#10b981", icon:"DL"},
+        {id: crypto.randomUUID(), name:"Runway ML", url:"https://runwayml.com/", cat:"imagem", color:"#a855f7", icon:"RW"},
+        {id: crypto.randomUUID(), name:"Jasper AI", url:"https://www.jasper.ai/", cat:"texto", color:"#f97316", icon:"JS"},
+        {id: crypto.randomUUID(), name:"Copy.ai", url:"https://www.copy.ai/", cat:"texto", color:"#6366f1", icon:"CPY"}
       ];
 
       function safeHost(url){ try { return (new URL(url)).host; } catch(e){ return ""; } }
@@ -634,7 +687,7 @@
             color: String(x.color || "#10b981"),
             icon: String(x.icon || "AI").slice(0,3).toUpperCase(),
             host: safeHost(String(x.url || "")),
-          })).filter(x => x.url.startsWith("http"));
+          })).filter(x => x.url && x.url.startsWith("http"));
         }catch(e){
           return DEFAULT_ITEMS.map(x => ({ ...x, host: safeHost(x.url) }));
         }
@@ -894,7 +947,7 @@
                 color: String(x.color || "#10b981"),
                 icon: String(x.icon || "AI").slice(0,3).toUpperCase(),
                 host: safeHost(String(x.url || "")),
-              })).filter(x => x.url.startsWith("http"));
+              })).filter(x => x.url && x.url.startsWith("http"));
               saveItems(items);
               render();
               toast("Importado com sucesso.");
