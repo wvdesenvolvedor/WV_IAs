@@ -175,7 +175,6 @@
       gap: 10px;
     }
 
-    /* Para tablets e celulares grandes, duas colunas ficam ok */
     @media (min-width: 640px) {
       .grid {
         grid-template-columns: 1fr 1fr;
@@ -196,7 +195,7 @@
       background: rgba(255, 255, 255, .04);
       box-shadow: var(--shadow);
       transition: transform .15s ease, border-color .15s ease, background .15s;
-      cursor: grab;
+      cursor: pointer;
       user-select: none;
       touch-action: pan-y;
       backdrop-filter: blur(4px);
@@ -204,7 +203,7 @@
     }
 
     .card:active {
-      cursor: grabbing;
+      transform: scale(.98);
       background: rgba(255, 255, 255, .08);
     }
 
@@ -313,7 +312,6 @@
       background: rgba(255, 255, 255, .06);
     }
 
-    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -434,49 +432,36 @@
       border: 1px solid rgba(255, 255, 255, .06);
     }
 
-    /* Ajustes para telas muito pequenas */
     @media (max-width: 420px) {
       body {
         padding: 8px 4px calc(8px + var(--safe-bottom));
       }
-
-      .badge,
-      .pill {
+      .badge, .pill {
         display: inline-block;
       }
-
-      /* Garantir que botões importantes não sumam */
-      #btnExport,
-      #btnImport,
-      #btnReset {
+      #btnExport, #btnImport, #btnReset {
         display: inline-flex !important;
       }
-
       .drag-handle {
         display: flex;
       }
-
       .card {
         padding: 12px;
       }
-
       .icon {
         width: 44px;
         height: 44px;
         flex-basis: 44px;
         font-size: 16px;
       }
-
       .label strong {
         font-size: 15px;
       }
-
       button {
         padding: 8px 10px;
         font-size: 13px;
         min-height: 42px;
       }
-
       .tab {
         padding: 8px 12px;
         font-size: 12px;
@@ -484,11 +469,7 @@
       }
     }
 
-    /* Melhorias para gestos */
-    .card,
-    button,
-    .tab,
-    .kebab {
+    .card, button, .tab, .kebab {
       touch-action: manipulation;
     }
 
@@ -501,9 +482,30 @@
     }
   </style>
 
-<style id="wv-splash-css">
-    #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0d1117; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999999; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: opacity 0.5s ease; }
-    .splash-container { border: 2px solid #58a6ff; padding: 40px 60px; text-align: center; border-radius: 8px; background-color: #0d1117; box-shadow: 0 0 20px rgba(88, 166, 255, 0.2); }
+  <style id="wv-splash-css">
+    #splash-screen { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100vw; 
+      height: 100vh; 
+      background-color: #0d1117; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+      z-index: 999999; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      transition: opacity 0.5s ease; 
+    }
+    .splash-container { 
+      border: 2px solid #58a6ff; 
+      padding: 40px 60px; 
+      text-align: center; 
+      border-radius: 8px; 
+      background-color: #0d1117; 
+      box-shadow: 0 0 20px rgba(88, 166, 255, 0.2); 
+    }
     .splash-icon { font-size: 60px; color: #79c0ff; margin-bottom: 10px; }
     .splash-title { color: #c9d1d9; font-size: 24px; font-weight: bold; margin: 10px 0 5px 0; }
     .splash-sub1 { color: #58a6ff; font-size: 14px; font-weight: bold; margin: 0; }
@@ -512,424 +514,490 @@
     .progress-bar { width: 260px; height: 12px; background-color: #30363d; border-radius: 6px; overflow: hidden; margin: 0 auto; position: relative; }
     .progress-fill { width: 50%; height: 100%; background-color: #58a6ff; border-radius: 6px; position: absolute; animation: loadingBar 1.5s infinite ease-in-out; }
     @keyframes loadingBar { 0% { left: -50%; } 50% { left: 100%; } 100% { left: -50%; } }
-</style>
+  </style>
 </head>
 <body>
 
 <div id="splash-screen">
-    <div class="splash-container">
-        <div class="splash-icon">⚡</div>
-        <h1 class="splash-title">WV_Desenvolvedor de Software</h1>
-        <p class="splash-sub1">Wellington Viana</p>
-        <p class="splash-sub2">@wellingtonviana.pego</p>
-        <p class="splash-load-text">Inicializando sistema...</p>
-        <div class="progress-bar"><div class="progress-fill"></div></div>
-    </div>
+  <div class="splash-container">
+    <div class="splash-icon">⚡</div>
+    <h1 class="splash-title">WV_Desenvolvedor de Software</h1>
+    <p class="splash-sub1">Wellington Viana</p>
+    <p class="splash-sub2">@wellingtonviana.pego</p>
+    <p class="splash-load-text">Inicializando sistema...</p>
+    <div class="progress-bar"><div class="progress-fill"></div></div>
+  </div>
 </div>
 
-  <main class="wrap">
-    <header>
-      <div class="top">
-        <h1>WV_IAs <span class="badge" id="countBadge">0 IAs</span></h1>
-        <div class="actions">
-          <button class="btn-primary" id="btnAdd">+ Adicionar</button>
-          <button id="btnExport">Exportar</button>
-          <button id="btnImport">Importar</button>
-          <button class="btn-ghost" id="btnReset" title="Restaurar padrão">↺</button>
-        </div>
-      </div>
-      <div class="tabs" role="tablist" aria-label="Categorias">
-        <div class="tab" role="tab" tabindex="0" data-tab="all" aria-selected="true">Tudo</div>
-        <div class="tab" role="tab" tabindex="0" data-tab="texto">IA Texto</div>
-        <div class="tab" role="tab" tabindex="0" data-tab="imagem">IA Imagem</div>
-        <div class="tab" role="tab" tabindex="0" data-tab="codigo">IA Código</div>
-        <div class="tab" role="tab" tabindex="0" data-tab="util">Utilitários</div>
-      </div>
-    </header>
-
-    <section class="grid" id="grid" aria-label="Lista de IAs"></section>
-    <div class="drag-info">🖱️ Arraste os cards para reordenar</div>
-  </main>
-
-  <!-- Modal -->
-  <div class="modal-backdrop" id="modalBg" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <h2 id="modalTitle">Adicionar IA</h2>
-      <div class="row two">
-        <div><label>Nome</label><input id="fName" placeholder="Ex: Claude, Perplexity..." /></div>
-        <div><label>Categoria</label>
-          <select id="fCat">
-            <option value="texto">IA Texto</option>
-            <option value="imagem">IA Imagem</option>
-            <option value="codigo">IA Código</option>
-            <option value="util">Utilitários</option>
-          </select>
-        </div>
-      </div>
-      <div class="row"><div><label>Link (URL)</label><input id="fUrl" placeholder="https://..." inputmode="url" /></div></div>
-      <div class="row two">
-        <div><label>Cor do botão</label><input id="fColor" placeholder="#10b981" /></div>
-        <div><label>Ícone (2–3 letras)</label><input id="fIcon" placeholder="Ex: AI" maxlength="3" /></div>
-      </div>
-      <div class="modal-actions">
-        <button id="btnCancel">Cancelar</button>
-        <button class="danger" id="btnDelete" style="display:none;">Excluir</button>
-        <button class="btn-primary" id="btnSave">Salvar</button>
+<main class="wrap">
+  <header>
+    <div class="top">
+      <h1>WV_IAs <span class="badge" id="countBadge">0 IAs</span></h1>
+      <div class="actions">
+        <button class="btn-primary" id="btnAdd">+ Adicionar</button>
+        <button id="btnExport">Exportar</button>
+        <button id="btnImport">Importar</button>
+        <button class="btn-ghost" id="btnReset" title="Restaurar padrão">↺</button>
       </div>
     </div>
+    <div class="tabs" role="tablist" aria-label="Categorias">
+      <div class="tab" role="tab" tabindex="0" data-tab="all" aria-selected="true">Tudo</div>
+      <div class="tab" role="tab" tabindex="0" data-tab="texto">IA Texto</div>
+      <div class="tab" role="tab" tabindex="0" data-tab="imagem">IA Imagem</div>
+      <div class="tab" role="tab" tabindex="0" data-tab="codigo">IA Código</div>
+      <div class="tab" role="tab" tabindex="0" data-tab="util">Utilitários</div>
+    </div>
+  </header>
+
+  <section class="grid" id="grid" aria-label="Lista de IAs"></section>
+  <div class="drag-info">🖱️ Arraste os cards para reordenar</div>
+</main>
+
+<div class="modal-backdrop" id="modalBg" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h2 id="modalTitle">Adicionar IA</h2>
+    <div class="row two">
+      <div><label>Nome</label><input id="fName" placeholder="Ex: Claude, Perplexity..." /></div>
+      <div><label>Categoria</label>
+        <select id="fCat">
+          <option value="texto">IA Texto</option>
+          <option value="imagem">IA Imagem</option>
+          <option value="codigo">IA Código</option>
+          <option value="util">Utilitários</option>
+        </select>
+      </div>
+    </div>
+    <div class="row"><div><label>Link (URL)</label><input id="fUrl" placeholder="https://..." inputmode="url" /></div></div>
+    <div class="row two">
+      <div><label>Cor do botão</label><input id="fColor" placeholder="#10b981" /></div>
+      <div><label>Ícone (2–3 letras)</label><input id="fIcon" placeholder="Ex: AI" maxlength="3" /></div>
+    </div>
+    <div class="modal-actions">
+      <button id="btnCancel">Cancelar</button>
+      <button class="danger" id="btnDelete" style="display:none;">Excluir</button>
+      <button class="btn-primary" id="btnSave">Salvar</button>
+    </div>
   </div>
-  <div class="toast" id="toast"></div>
+</div>
+<div class="toast" id="toast"></div>
 
-  <script>
-    (function(){
-      "use strict";
+<script>
+  (function(){
+    "use strict";
 
-      const STORAGE_KEY = "WV_IAS_LIST_SINGLEHTML_V3";
-
-      const DEFAULT_ITEMS = [
-        {id: crypto.randomUUID(), name:"ChatGPT", url:"https://chatgpt.com/", cat:"texto", color:"#10b981", icon:"GPT"},
-        {id: crypto.randomUUID(), name:"DeepSeek", url:"https://chat.deepseek.com/", cat:"codigo", color:"#f97316", icon:"DS"},
-        {id: crypto.randomUUID(), name:"Grok", url:"https://grok.com/", cat:"texto", color:"#ef4444", icon:"X"},
-        {id: crypto.randomUUID(), name:"Google AI Studio", url:"https://aistudio.google.com/prompts/new_chat", cat:"codigo", color:"#00d2ff", icon:"AI"},
-        {id: crypto.randomUUID(), name:"Gemini", url:"https://gemini.google.com/app", cat:"texto", color:"#7c3aed", icon:"G"},
-        {id: crypto.randomUUID(), name:"Claude", url:"https://claude.ai", cat:"texto", color:"#d97706", icon:"CL"},
-        {id: crypto.randomUUID(), name:"Microsoft Copilot", url:"https://copilot.microsoft.com", cat:"texto", color:"#00a4ef", icon:"CP"},
-        {id: crypto.randomUUID(), name:"Perplexity AI", url:"https://perplexity.ai", cat:"texto", color:"#3b82f6", icon:"PX"},
-        {id: crypto.randomUUID(), name:"HuggingChat", url:"https://huggingface.co/chat", cat:"texto", color:"#f9d423", icon:"HC"},
-        {id: crypto.randomUUID(), name:"Poe", url:"https://poe.com", cat:"texto", color:"#6366f1", icon:"PO"},
-        {id: crypto.randomUUID(), name:"You.com", url:"https://you.com", cat:"texto", color:"#06b6d4", icon:"YO"},
-        {id: crypto.randomUUID(), name:"Blackbox AI", url:"https://www.blackbox.ai", cat:"codigo", color:"#1e293b", icon:"BB"},
-        {id: crypto.randomUUID(), name:"Phind", url:"https://www.phind.com", cat:"codigo", color:"#a855f7", icon:"PH"},
-        {id: crypto.randomUUID(), name:"Codeium", url:"https://codeium.com", cat:"codigo", color:"#22c55e", icon:"CD"},
-        {id: crypto.randomUUID(), name:"Tabnine", url:"https://www.tabnine.com", cat:"codigo", color:"#ec489a", icon:"TN"},
-        {id: crypto.randomUUID(), name:"Cody", url:"https://sourcegraph.com/cody", cat:"codigo", color:"#f97316", icon:"CY"},
-        {id: crypto.randomUUID(), name:"Replit AI", url:"https://replit.com", cat:"codigo", color:"#6366f1", icon:"RP"},
-        {id: crypto.randomUUID(), name:"Leonardo AI", url:"https://leonardo.ai", cat:"imagem", color:"#a855f7", icon:"LE"},
-        {id: crypto.randomUUID(), name:"Playground AI", url:"https://playgroundai.com", cat:"imagem", color:"#14b8a6", icon:"PG"},
-        {id: crypto.randomUUID(), name:"Krea AI", url:"https://krea.ai", cat:"imagem", color:"#f97316", icon:"KR"},
-        {id: crypto.randomUUID(), name:"Ideogram", url:"https://ideogram.ai", cat:"imagem", color:"#ec489a", icon:"ID"},
-        {id: crypto.randomUUID(), name:"Clipdrop", url:"https://clipdrop.co", cat:"imagem", color:"#3b82f6", icon:"CD"},
-        {id: crypto.randomUUID(), name:"Remove.bg", url:"https://remove.bg", cat:"imagem", color:"#8b5cf6", icon:"BG"},
-        {id: crypto.randomUUID(), name:"Notion AI", url:"https://notion.so", cat:"util", color:"#000000", icon:"NT"},
-        {id: crypto.randomUUID(), name:"Grammarly", url:"https://grammarly.com", cat:"util", color:"#15c39a", icon:"GM"},
-        {id: crypto.randomUUID(), name:"Otter.ai", url:"https://otter.ai", cat:"util", color:"#0891b2", icon:"OT"},
-        {id: crypto.randomUUID(), name:"Canva Magic", url:"https://canva.com", cat:"util", color:"#00c4cc", icon:"CV"},
-        {id: crypto.randomUUID(), name:"Tome", url:"https://tome.app", cat:"util", color:"#8b5cf6", icon:"TM"},
-        {id: crypto.randomUUID(), name:"Gamma", url:"https://gamma.app", cat:"util", color:"#f59e0b", icon:"GA"}
-      ];
-
-      function safeHost(url){ try { return (new URL(url)).host; } catch(e){ return ""; } }
-
-      function loadItems(){
-        try{
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if(!raw) return DEFAULT_ITEMS.map(x => ({ ...x, host: safeHost(x.url) }));
-          const data = JSON.parse(raw);
-          if(!Array.isArray(data)) throw new Error("invalid");
-          return data.map(x => ({
-            id: (x.id && String(x.id)) || crypto.randomUUID(),
-            name: String(x.name || "IA"),
-            url: String(x.url || ""),
-            cat: (x.cat==="texto"||x.cat==="imagem"||x.cat==="codigo"||x.cat==="util") ? x.cat : "texto",
-            color: String(x.color || "#10b981"),
-            icon: String(x.icon || "AI").slice(0,3).toUpperCase(),
-            host: safeHost(String(x.url || "")),
-          })).filter(x => x.url.startsWith("http"));
-        }catch(e){
-          return DEFAULT_ITEMS.map(x => ({ ...x, host: safeHost(x.url) }));
+    // IMPORTANTE: Mantendo a mesma chave V3 para não perder seus links salvos no Kodular
+    const STORAGE_KEY = "WV_IAS_LIST_SINGLEHTML_V3";
+    
+    // Função para abrir links de forma compatível com Kodular
+    function openLink(url) {
+      if (!url || !url.startsWith('http')) {
+        toast("Link inválido!");
+        return false;
+      }
+      
+      // Método para Kodular WebView
+      try {
+        // Tenta usar o esquema de intent do Android
+        if (window.Kodular && window.Kodular.openURL) {
+          window.Kodular.openURL(url);
+          return true;
         }
-      }
-
-      function saveItems(items){ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
-
-      const grid = document.getElementById("grid");
-      const countBadge = document.getElementById("countBadge");
-      let items = loadItems();
-      let activeTab = "all";
-      let draggedItem = null;
-
-      function toast(msg){
-        const t = document.getElementById("toast");
-        t.textContent = msg;
-        t.style.display = "block";
-        clearTimeout(window.__tto);
-        window.__tto = setTimeout(() => t.style.display = "none", 2000);
-      }
-
-      function catLabel(cat){
-        if(cat==="texto") return "💬 IA Texto";
-        if(cat==="imagem") return "🎨 IA Imagem";
-        if(cat==="codigo") return "💻 IA Código";
-        if(cat==="util") return "🛠️ Utilitários";
-        return "—";
-      }
-
-      function reorderItems(dragIndex, dropIndex) {
-        const newItems = [...items];
-        const [removed] = newItems.splice(dragIndex, 1);
-        newItems.splice(dropIndex, 0, removed);
-        items = newItems;
-        saveItems(items);
-        render();
-        toast("Ordem atualizada!");
-      }
-
-      function render(){
-        const filtered = items.filter(it => activeTab === "all" ? true : it.cat === activeTab);
-        grid.innerHTML = "";
         
-        filtered.forEach((it) => {
-          const originalIndex = items.findIndex(item => item.id === it.id);
-          
-          const a = document.createElement("a");
-          a.className = "card";
-          a.href = it.url;
-          a.target = "_blank";
-          a.rel = "noopener";
-          a.setAttribute("draggable", "true");
-          a.setAttribute("data-id", it.id);
-          a.setAttribute("data-index", originalIndex);
-          
-          a.addEventListener("dragstart", (e) => {
-            draggedItem = a;
-            e.dataTransfer.setData("text/plain", it.id);
-            e.dataTransfer.effectAllowed = "move";
-            a.classList.add("dragging");
-          });
-          
-          a.addEventListener("dragend", () => {
-            a.classList.remove("dragging");
-            document.querySelectorAll(".card").forEach(card => card.classList.remove("drag-over"));
-            draggedItem = null;
-          });
-          
-          a.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = "move";
-            if (draggedItem !== a) a.classList.add("drag-over");
-          });
-          
-          a.addEventListener("dragleave", () => a.classList.remove("drag-over"));
-          
-          a.addEventListener("drop", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            a.classList.remove("drag-over");
-            if (!draggedItem || draggedItem === a) return;
-            const dragId = draggedItem.getAttribute("data-id");
-            const dropId = a.getAttribute("data-id");
-            const dragIndex = items.findIndex(item => item.id === dragId);
-            const dropIndex = items.findIndex(item => item.id === dropId);
-            if (dragIndex !== -1 && dropIndex !== -1 && dragIndex !== dropIndex) {
-              reorderItems(dragIndex, dropIndex);
-            }
-          });
-          
-          const icon = document.createElement("div");
-          icon.className = "icon";
-          icon.style.background = `linear-gradient(135deg, ${it.color}, #1f2937)`;
-          icon.textContent = (it.icon || "AI").toUpperCase();
-          
-          const label = document.createElement("div");
-          label.className = "label";
-          
-          const strong = document.createElement("strong");
-          strong.textContent = it.name;
-          
-          const span = document.createElement("span");
-          span.textContent = it.host || safeHost(it.url);
-          
-          label.appendChild(strong);
-          label.appendChild(span);
-          
-          const meta = document.createElement("div");
-          meta.className = "meta";
-          
-          const dragHandle = document.createElement("div");
-          dragHandle.className = "drag-handle";
-          dragHandle.innerHTML = "⋮⋮";
-          dragHandle.title = "Arraste para reorganizar";
-          
-          const pill = document.createElement("div");
-          pill.className = "pill";
-          pill.textContent = catLabel(it.cat);
-          
-          const kebab = document.createElement("button");
-          kebab.className = "kebab";
-          kebab.type = "button";
-          kebab.textContent = "⋮";
-          kebab.title = "Editar/Excluir";
-          kebab.addEventListener("click", (ev) => {
-            ev.preventDefault();
-            ev.stopPropagation();
-            openModal(it.id);
-          });
-          
-          meta.appendChild(dragHandle);
-          meta.appendChild(pill);
-          meta.appendChild(kebab);
-          
-          a.appendChild(icon);
-          a.appendChild(label);
-          a.appendChild(meta);
-          
-          grid.appendChild(a);
-        });
-        
-        countBadge.textContent = `${items.length} IAs`;
-      }
-
-      function setTab(tab){
-        activeTab = tab;
-        document.querySelectorAll(".tab").forEach(t => {
-          t.setAttribute("aria-selected", t.dataset.tab === tab ? "true" : "false");
-        });
-        render();
-      }
-
-      document.querySelectorAll(".tab").forEach(t => {
-        t.addEventListener("click", () => setTab(t.dataset.tab));
-        t.addEventListener("keydown", (e) => { if(e.key==="Enter"||e.key===" ") setTab(t.dataset.tab); });
-      });
-
-      const modalBg = document.getElementById("modalBg");
-      const modalTitle = document.getElementById("modalTitle");
-      const fName = document.getElementById("fName");
-      const fUrl  = document.getElementById("fUrl");
-      const fCat  = document.getElementById("fCat");
-      const fColor= document.getElementById("fColor");
-      const fIcon = document.getElementById("fIcon");
-      const btnDelete = document.getElementById("btnDelete");
-      let editingId = null;
-
-      function openModal(id=null){
-        editingId = id;
-        if(id){
-          const it = items.find(x => x.id === id);
-          modalTitle.textContent = "Editar IA";
-          fName.value = it?.name || "";
-          fUrl.value  = it?.url || "";
-          fCat.value  = it?.cat || "texto";
-          fColor.value= it?.color || "#10b981";
-          fIcon.value = it?.icon || "AI";
-          btnDelete.style.display = "inline-block";
-        } else {
-          modalTitle.textContent = "Adicionar IA";
-          fName.value = "";
-          fUrl.value  = "";
-          fCat.value  = "texto";
-          fColor.value= "#10b981";
-          fIcon.value = "AI";
-          btnDelete.style.display = "none";
+        // Método alternativo para WebView
+        if (window.location && window.location.href) {
+          window.location.href = url;
+          return true;
         }
-        modalBg.style.display = "flex";
-        setTimeout(() => fName.focus(), 60);
+      } catch(e) {
+        console.log("Erro ao abrir link:", e);
       }
+      
+      // Fallback: criar link e clicar
+      const link = document.createElement('a');
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.click();
+      
+      return true;
+    }
 
-      function closeModal(){ modalBg.style.display = "none"; editingId = null; }
+    const DEFAULT_ITEMS = [
+      {id: crypto.randomUUID(), name:"ChatGPT", url:"https://chatgpt.com/", cat:"texto", color:"#10b981", icon:"GPT"},
+      {id: crypto.randomUUID(), name:"DeepSeek", url:"https://chat.deepseek.com/", cat:"codigo", color:"#f97316", icon:"DS"},
+      {id: crypto.randomUUID(), name:"Grok", url:"https://grok.com/", cat:"texto", color:"#ef4444", icon:"X"},
+      {id: crypto.randomUUID(), name:"Google AI Studio", url:"https://aistudio.google.com/prompts/new_chat", cat:"codigo", color:"#00d2ff", icon:"AI"},
+      {id: crypto.randomUUID(), name:"Gemini", url:"https://gemini.google.com/app", cat:"texto", color:"#7c3aed", icon:"G"},
+      {id: crypto.randomUUID(), name:"Claude", url:"https://claude.ai", cat:"texto", color:"#d97706", icon:"CL"},
+      {id: crypto.randomUUID(), name:"Microsoft Copilot", url:"https://copilot.microsoft.com", cat:"texto", color:"#00a4ef", icon:"CP"},
+      {id: crypto.randomUUID(), name:"Perplexity AI", url:"https://perplexity.ai", cat:"texto", color:"#3b82f6", icon:"PX"},
+      {id: crypto.randomUUID(), name:"HuggingChat", url:"https://huggingface.co/chat", cat:"texto", color:"#f9d423", icon:"HC"},
+      {id: crypto.randomUUID(), name:"Poe", url:"https://poe.com", cat:"texto", color:"#6366f1", icon:"PO"},
+      {id: crypto.randomUUID(), name:"You.com", url:"https://you.com", cat:"texto", color:"#06b6d4", icon:"YO"},
+      {id: crypto.randomUUID(), name:"Blackbox AI", url:"https://www.blackbox.ai", cat:"codigo", color:"#1e293b", icon:"BB"},
+      {id: crypto.randomUUID(), name:"Phind", url:"https://www.phind.com", cat:"codigo", color:"#a855f7", icon:"PH"},
+      {id: crypto.randomUUID(), name:"Codeium", url:"https://codeium.com", cat:"codigo", color:"#22c55e", icon:"CD"},
+      {id: crypto.randomUUID(), name:"Tabnine", url:"https://www.tabnine.com", cat:"codigo", color:"#ec489a", icon:"TN"},
+      {id: crypto.randomUUID(), name:"Cody", url:"https://sourcegraph.com/cody", cat:"codigo", color:"#f97316", icon:"CY"},
+      {id: crypto.randomUUID(), name:"Replit AI", url:"https://replit.com", cat:"codigo", color:"#6366f1", icon:"RP"},
+      {id: crypto.randomUUID(), name:"Leonardo AI", url:"https://leonardo.ai", cat:"imagem", color:"#a855f7", icon:"LE"},
+      {id: crypto.randomUUID(), name:"Playground AI", url:"https://playgroundai.com", cat:"imagem", color:"#14b8a6", icon:"PG"},
+      {id: crypto.randomUUID(), name:"Krea AI", url:"https://krea.ai", cat:"imagem", color:"#f97316", icon:"KR"},
+      {id: crypto.randomUUID(), name:"Ideogram", url:"https://ideogram.ai", cat:"imagem", color:"#ec489a", icon:"ID"},
+      {id: crypto.randomUUID(), name:"Clipdrop", url:"https://clipdrop.co", cat:"imagem", color:"#3b82f6", icon:"CD"},
+      {id: crypto.randomUUID(), name:"Remove.bg", url:"https://remove.bg", cat:"imagem", color:"#8b5cf6", icon:"BG"},
+      {id: crypto.randomUUID(), name:"Notion AI", url:"https://notion.so", cat:"util", color:"#000000", icon:"NT"},
+      {id: crypto.randomUUID(), name:"Grammarly", url:"https://grammarly.com", cat:"util", color:"#15c39a", icon:"GM"},
+      {id: crypto.randomUUID(), name:"Otter.ai", url:"https://otter.ai", cat:"util", color:"#0891b2", icon:"OT"},
+      {id: crypto.randomUUID(), name:"Canva Magic", url:"https://canva.com", cat:"util", color:"#00c4cc", icon:"CV"},
+      {id: crypto.randomUUID(), name:"Tome", url:"https://tome.app", cat:"util", color:"#8b5cf6", icon:"TM"},
+      {id: crypto.randomUUID(), name:"Gamma", url:"https://gamma.app", cat:"util", color:"#f59e0b", icon:"GA"}
+    ];
 
-      document.getElementById("btnAdd").addEventListener("click", () => openModal(null));
-      document.getElementById("btnCancel").addEventListener("click", closeModal);
-      modalBg.addEventListener("click", (e) => { if(e.target === modalBg) closeModal(); });
+    function safeHost(url){ 
+      try { 
+        const host = (new URL(url)).host;
+        return host.replace(/^www\./, '');
+      } catch(e){ 
+        return ""; 
+      } 
+    }
 
-      document.getElementById("btnSave").addEventListener("click", () => {
-        const name = (fName.value || "").trim();
-        const url = (fUrl.value || "").trim();
-        const cat = fCat.value;
-        const color = (fColor.value || "").trim() || "#10b981";
-        const icon = (fIcon.value || "AI").trim().slice(0,3).toUpperCase();
-        if(!name){ toast("Preencha o nome."); return; }
-        if(!url || !url.startsWith("http")){ toast("Link deve começar com https://"); return; }
-        if(editingId){
-          items = items.map(it => it.id === editingId ? {...it, name, url, cat, color, icon, host: safeHost(url)} : it);
-          toast("IA atualizada.");
-        } else {
-          items.unshift({id: crypto.randomUUID(), name, url, cat, color, icon, host: safeHost(url)});
-          toast("IA adicionada.");
-        }
-        saveItems(items);
-        closeModal();
-        render();
-      });
+    function loadItems(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return DEFAULT_ITEMS.map(x => ({ ...x, host: safeHost(x.url) }));
+        const data = JSON.parse(raw);
+        if(!Array.isArray(data)) throw new Error("invalid");
+        return data.map(x => ({
+          id: (x.id && String(x.id)) || crypto.randomUUID(),
+          name: String(x.name || "IA"),
+          url: String(x.url || ""),
+          cat: (x.cat==="texto"||x.cat==="imagem"||x.cat==="codigo"||x.cat==="util") ? x.cat : "texto",
+          color: String(x.color || "#10b981"),
+          icon: String(x.icon || "AI").slice(0,3).toUpperCase(),
+          host: safeHost(String(x.url || "")),
+        })).filter(x => x.url.startsWith("http"));
+      }catch(e){
+        return DEFAULT_ITEMS.map(x => ({ ...x, host: safeHost(x.url) }));
+      }
+    }
 
-      btnDelete.addEventListener("click", () => {
-        if(!editingId) return;
-        const it = items.find(x => x.id === editingId);
-        if(!confirm(`Excluir "${it?.name || "IA"}"?`)) return;
-        items = items.filter(x => x.id !== editingId);
-        saveItems(items);
-        closeModal();
-        render();
-        toast("IA excluída.");
-      });
+    function saveItems(items){ 
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); 
+    }
 
-      document.getElementById("btnExport").addEventListener("click", () => {
-        const data = JSON.stringify(items, null, 2);
-        const blob = new Blob([data], {type: "application/json"});
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "WV_IAs_backup.json";
-        a.click();
-        URL.revokeObjectURL(a.href);
-        toast("Backup exportado.");
-      });
+    const grid = document.getElementById("grid");
+    const countBadge = document.getElementById("countBadge");
+    let items = loadItems();
+    let activeTab = "all";
+    let draggedItem = null;
 
-      document.getElementById("btnImport").addEventListener("click", () => {
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = "application/json";
-        input.onchange = () => {
-          const file = input.files?.[0];
-          if(!file) return;
-          const reader = new FileReader();
-          reader.onload = () => {
-            try{
-              const data = JSON.parse(reader.result);
-              if(!Array.isArray(data)) throw new Error("Formato inválido");
-              items = data.map(x => ({
-                id: (x.id && String(x.id)) || crypto.randomUUID(),
-                name: String(x.name || "IA"),
-                url: String(x.url || ""),
-                cat: (x.cat==="texto"||x.cat==="imagem"||x.cat==="codigo"||x.cat==="util") ? x.cat : "texto",
-                color: String(x.color || "#10b981"),
-                icon: String(x.icon || "AI").slice(0,3).toUpperCase(),
-                host: safeHost(String(x.url || "")),
-              })).filter(x => x.url.startsWith("http"));
-              saveItems(items);
-              render();
-              toast("Importado com sucesso.");
-            }catch(e){
-              toast("Falha ao importar (arquivo inválido).");
-            }
-          };
-          reader.readAsText(file);
-        };
-        input.click();
-      });
+    function toast(msg){
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.style.display = "block";
+      clearTimeout(window.__tto);
+      window.__tto = setTimeout(() => t.style.display = "none", 2000);
+    }
 
-      document.getElementById("btnReset").addEventListener("click", () => {
-        if(!confirm("Restaurar lista padrão?")) return;
-        items = DEFAULT_ITEMS.map(x => ({ ...x, host: safeHost(x.url) }));
-        saveItems(items);
-        render();
-        toast("Lista padrão restaurada!");
-      });
+    function catLabel(cat){
+      if(cat==="texto") return "💬 IA Texto";
+      if(cat==="imagem") return "🎨 IA Imagem";
+      if(cat==="codigo") return "💻 IA Código";
+      if(cat==="util") return "🛠️ Utilitários";
+      return "—";
+    }
 
+    function reorderItems(dragIndex, dropIndex) {
+      const newItems = [...items];
+      const [removed] = newItems.splice(dragIndex, 1);
+      newItems.splice(dropIndex, 0, removed);
+      items = newItems;
       saveItems(items);
       render();
-    })();
-  </script>
+      toast("Ordem atualizada!");
+    }
+
+    function handleCardClick(it, event) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      if (it && it.url) {
+        openLink(it.url);
+      } else {
+        toast("Link não disponível!");
+      }
+    }
+
+    function render(){
+      const filtered = items.filter(it => activeTab === "all" ? true : it.cat === activeTab);
+      grid.innerHTML = "";
+      
+      filtered.forEach((it) => {
+        const originalIndex = items.findIndex(item => item.id === it.id);
+        
+        const card = document.createElement("div");
+        card.className = "card";
+        card.setAttribute("data-id", it.id);
+        card.setAttribute("data-index", originalIndex);
+        card.setAttribute("data-url", it.url);
+        
+        // Evento de clique para abrir o link
+        card.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleCardClick(it, e);
+        });
+        
+        // Drag and drop
+        card.setAttribute("draggable", "true");
+        
+        card.addEventListener("dragstart", (e) => {
+          draggedItem = card;
+          e.dataTransfer.setData("text/plain", it.id);
+          e.dataTransfer.effectAllowed = "move";
+          card.classList.add("dragging");
+        });
+        
+        card.addEventListener("dragend", () => {
+          card.classList.remove("dragging");
+          document.querySelectorAll(".card").forEach(c => c.classList.remove("drag-over"));
+          draggedItem = null;
+        });
+        
+        card.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+          if (draggedItem !== card) card.classList.add("drag-over");
+        });
+        
+        card.addEventListener("dragleave", () => card.classList.remove("drag-over"));
+        
+        card.addEventListener("drop", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          card.classList.remove("drag-over");
+          if (!draggedItem || draggedItem === card) return;
+          const dragId = draggedItem.getAttribute("data-id");
+          const dropId = card.getAttribute("data-id");
+          const dragIndex = items.findIndex(item => item.id === dragId);
+          const dropIndex = items.findIndex(item => item.id === dropId);
+          if (dragIndex !== -1 && dropIndex !== -1 && dragIndex !== dropIndex) {
+            reorderItems(dragIndex, dropIndex);
+          }
+        });
+        
+        const icon = document.createElement("div");
+        icon.className = "icon";
+        icon.style.background = `linear-gradient(135deg, ${it.color}, #1f2937)`;
+        icon.textContent = (it.icon || "AI").toUpperCase();
+        
+        const label = document.createElement("div");
+        label.className = "label";
+        
+        const strong = document.createElement("strong");
+        strong.textContent = it.name;
+        
+        const span = document.createElement("span");
+        span.textContent = it.host || safeHost(it.url);
+        
+        label.appendChild(strong);
+        label.appendChild(span);
+        
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        
+        const dragHandle = document.createElement("div");
+        dragHandle.className = "drag-handle";
+        dragHandle.innerHTML = "⋮⋮";
+        dragHandle.title = "Arraste para reorganizar";
+        dragHandle.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+        
+        const pill = document.createElement("div");
+        pill.className = "pill";
+        pill.textContent = catLabel(it.cat);
+        
+        const kebab = document.createElement("button");
+        kebab.className = "kebab";
+        kebab.type = "button";
+        kebab.textContent = "⋮";
+        kebab.title = "Editar/Excluir";
+        kebab.addEventListener("click", (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          openModal(it.id);
+        });
+        
+        meta.appendChild(dragHandle);
+        meta.appendChild(pill);
+        meta.appendChild(kebab);
+        
+        card.appendChild(icon);
+        card.appendChild(label);
+        card.appendChild(meta);
+        
+        grid.appendChild(card);
+      });
+      
+      countBadge.textContent = `${items.length} IAs`;
+    }
+
+    function setTab(tab){
+      activeTab = tab;
+      document.querySelectorAll(".tab").forEach(t => {
+        t.setAttribute("aria-selected", t.dataset.tab === tab ? "true" : "false");
+      });
+      render();
+    }
+
+    document.querySelectorAll(".tab").forEach(t => {
+      t.addEventListener("click", () => setTab(t.dataset.tab));
+      t.addEventListener("keydown", (e) => { if(e.key==="Enter"||e.key===" ") setTab(t.dataset.tab); });
+    });
+
+    const modalBg = document.getElementById("modalBg");
+    const modalTitle = document.getElementById("modalTitle");
+    const fName = document.getElementById("fName");
+    const fUrl  = document.getElementById("fUrl");
+    const fCat  = document.getElementById("fCat");
+    const fColor= document.getElementById("fColor");
+    const fIcon = document.getElementById("fIcon");
+    const btnDelete = document.getElementById("btnDelete");
+    let editingId = null;
+
+    function openModal(id=null){
+      editingId = id;
+      if(id){
+        const it = items.find(x => x.id === id);
+        modalTitle.textContent = "Editar IA";
+        fName.value = it?.name || "";
+        fUrl.value  = it?.url || "";
+        fCat.value  = it?.cat || "texto";
+        fColor.value= it?.color || "#10b981";
+        fIcon.value = it?.icon || "AI";
+        btnDelete.style.display = "inline-block";
+      } else {
+        modalTitle.textContent = "Adicionar IA";
+        fName.value = "";
+        fUrl.value  = "";
+        fCat.value  = "texto";
+        fColor.value= "#10b981";
+        fIcon.value = "AI";
+        btnDelete.style.display = "none";
+      }
+      modalBg.style.display = "flex";
+      setTimeout(() => fName.focus(), 60);
+    }
+
+    function closeModal(){ modalBg.style.display = "none"; editingId = null; }
+
+    document.getElementById("btnAdd").addEventListener("click", () => openModal(null));
+    document.getElementById("btnCancel").addEventListener("click", closeModal);
+    modalBg.addEventListener("click", (e) => { if(e.target === modalBg) closeModal(); });
+
+    document.getElementById("btnSave").addEventListener("click", () => {
+      const name = (fName.value || "").trim();
+      const url = (fUrl.value || "").trim();
+      const cat = fCat.value;
+      const color = (fColor.value || "").trim() || "#10b981";
+      const icon = (fIcon.value || "AI").trim().slice(0,3).toUpperCase();
+      if(!name){ toast("Preencha o nome."); return; }
+      if(!url || !url.startsWith("http")){ toast("Link deve começar com https://"); return; }
+      if(editingId){
+        items = items.map(it => it.id === editingId ? {...it, name, url, cat, color, icon, host: safeHost(url)} : it);
+        toast("IA atualizada.");
+      } else {
+        items.unshift({id: crypto.randomUUID(), name, url, cat, color, icon, host: safeHost(url)});
+        toast("IA adicionada.");
+      }
+      saveItems(items);
+      closeModal();
+      render();
+    });
+
+    btnDelete.addEventListener("click", () => {
+      if(!editingId) return;
+      const it = items.find(x => x.id === editingId);
+      if(!confirm(`Excluir "${it?.name || "IA"}"?`)) return;
+      items = items.filter(x => x.id !== editingId);
+      saveItems(items);
+      closeModal();
+      render();
+      toast("IA excluída.");
+    });
+
+    document.getElementById("btnExport").addEventListener("click", () => {
+      const data = JSON.stringify(items, null, 2);
+      const blob = new Blob([data], {type: "application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "WV_IAs_backup.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast("Backup exportado.");
+    });
+
+    document.getElementById("btnImport").addEventListener("click", () => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "application/json";
+      input.onchange = () => {
+        const file = input.files?.[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try{
+            const data = JSON.parse(reader.result);
+            if(!Array.isArray(data)) throw new Error("Formato inválido");
+            items = data.map(x => ({
+              id: (x.id && String(x.id)) || crypto.randomUUID(),
+              name: String(x.name || "IA"),
+              url: String(x.url || ""),
+              cat: (x.cat==="texto"||x.cat==="imagem"||x.cat==="codigo"||x.cat==="util") ? x.cat : "texto",
+              color: String(x.color || "#10b981"),
+              icon: String(x.icon || "AI").slice(0,3).toUpperCase(),
+              host: safeHost(String(x.url || "")),
+            })).filter(x => x.url.startsWith("http"));
+            saveItems(items);
+            render();
+            toast("Importado com sucesso.");
+          }catch(e){
+            toast("Falha ao importar (arquivo inválido).");
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    });
+
+    document.getElementById("btnReset").addEventListener("click", () => {
+      if(!confirm("Restaurar lista padrão? Isso vai apagar todos os seus links adicionados!")) return;
+      items = DEFAULT_ITEMS.map(x => ({ ...x, host: safeHost(x.url) }));
+      saveItems(items);
+      render();
+      toast("Lista padrão restaurada!");
+    });
+
+    // Salvar e renderizar
+    saveItems(items);
+    render();
+  })();
+</script>
 
 <script id="wv-splash-js">
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            var splash = document.getElementById('splash-screen');
-            if(splash) {
-                splash.style.opacity = '0';
-                setTimeout(function() { splash.style.display = 'none'; }, 500);
-            }
-        }, 2600);
-    });
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      var splash = document.getElementById('splash-screen');
+      if(splash) {
+        splash.style.opacity = '0';
+        setTimeout(function() { splash.style.display = 'none'; }, 500);
+      }
+    }, 2600);
+  });
 </script>
 
 </body>
