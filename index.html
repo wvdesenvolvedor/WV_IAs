@@ -42,7 +42,7 @@
     }
 
     .wrap {
-      width: min(100%, 860px);
+      width: min(100%, 1180px);
       margin: 0 auto;
     }
 
@@ -175,10 +175,56 @@
       gap: 10px;
     }
 
-    @media (min-width: 640px) {
+    /* Layout responsivo:
+       - Celular: 1 coluna, padrão mobile preservado.
+       - Tablet/intermediário: 2 colunas.
+       - Windows/desktop: 3 colunas. */
+    @media (min-width: 700px) {
       .grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
+      }
+    }
+
+    @media (min-width: 1040px) {
+      .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .card {
+        padding: 12px;
+        gap: 10px;
+      }
+
+      .icon {
+        width: 44px;
+        height: 44px;
+        flex-basis: 44px;
+        border-radius: 15px;
+        font-size: 16px;
+      }
+
+      .label strong {
+        font-size: 15px;
+      }
+
+      .pill {
+        font-size: 10px;
+        padding: 4px 7px;
+      }
+
+      .meta {
+        gap: 5px;
+      }
+
+      .drag-handle {
+        padding: 4px 3px;
+      }
+
+      .kebab {
+        min-width: 34px;
+        padding: 7px 6px;
       }
     }
 
@@ -594,32 +640,32 @@
         toast("Link inválido!");
         return false;
       }
-      
-      // Método para Kodular WebView
+
+      // Abre em nova aba/janela no Windows, Chrome, Edge e navegadores modernos.
+      // Mantém o hub aberto na aba original.
       try {
-        // Tenta usar o esquema de intent do Android
-        if (window.Kodular && window.Kodular.openURL) {
-          window.Kodular.openURL(url);
-          return true;
-        }
-        
-        // Método alternativo para WebView
-        if (window.location && window.location.href) {
-          window.location.href = url;
-          return true;
-        }
+        const novaAba = window.open(url, '_blank', 'noopener,noreferrer');
+        if (novaAba) return true;
       } catch(e) {
-        console.log("Erro ao abrir link:", e);
+        console.log("window.open bloqueado:", e);
       }
-      
-      // Fallback: criar link e clicar
-      const link = document.createElement('a');
-      link.href = url;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.click();
-      
-      return true;
+
+      // Fallback: criar link com target _blank e clicar automaticamente.
+      try {
+        const link = document.createElement('a');
+        link.href = url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        return true;
+      } catch(e) {
+        console.log("Erro ao abrir em nova aba:", e);
+      }
+
+      toast("O navegador bloqueou a nova aba. Permita pop-ups para este arquivo.");
+      return false;
     }
 
     const DEFAULT_ITEMS = [
