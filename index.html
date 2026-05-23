@@ -697,7 +697,23 @@
       {id: crypto.randomUUID(), name:"Otter.ai", url:"https://otter.ai", cat:"util", color:"#0891b2", icon:"OT"},
       {id: crypto.randomUUID(), name:"Canva Magic", url:"https://canva.com", cat:"util", color:"#00c4cc", icon:"CV"},
       {id: crypto.randomUUID(), name:"Tome", url:"https://tome.app", cat:"util", color:"#8b5cf6", icon:"TM"},
-      {id: crypto.randomUUID(), name:"Gamma", url:"https://gamma.app", cat:"util", color:"#f59e0b", icon:"GA"}
+      {id: crypto.randomUUID(), name:"Gamma", url:"https://gamma.app", cat:"util", color:"#f59e0b", icon:"GA"},
+
+      // Itens extras restaurados para a base completa do seu hub WV_IAs.
+      {id: crypto.randomUUID(), name:"Corretor", url:"https://quillbot.com/", cat:"texto", color:"#10b981", icon:"QUI"},
+      {id: crypto.randomUUID(), name:"Meta AI", url:"https://www.meta.ai/", cat:"texto", color:"#0891b2", icon:"MTA"},
+      {id: crypto.randomUUID(), name:"Qwen", url:"https://chat.qwen.ai/", cat:"texto", color:"#0ea5e9", icon:"QWE"},
+      {id: crypto.randomUUID(), name:"GLM 5.1", url:"https://chat.z.ai/", cat:"texto", color:"#111827", icon:"GLM"},
+      {id: crypto.randomUUID(), name:"GitHub", url:"https://github.com/", cat:"codigo", color:"#111827", icon:"GTH"},
+      {id: crypto.randomUUID(), name:"Montar APK", url:"https://www.kodular.io/", cat:"codigo", color:"#6d4bc3", icon:"KD"},
+      {id: crypto.randomUUID(), name:"Mistral AI", url:"https://chat.mistral.ai/", cat:"texto", color:"#ff7000", icon:"MIS"},
+      {id: crypto.randomUUID(), name:"Manus AI", url:"https://manus.im/", cat:"util", color:"#2563eb", icon:"MAN"},
+      {id: crypto.randomUUID(), name:"Cursor", url:"https://www.cursor.com/", cat:"codigo", color:"#334155", icon:"CUR"},
+      {id: crypto.randomUUID(), name:"v0.dev", url:"https://v0.dev/", cat:"codigo", color:"#000000", icon:"V0"},
+      {id: crypto.randomUUID(), name:"Bolt.new", url:"https://bolt.new/", cat:"codigo", color:"#f59e0b", icon:"BLT"},
+      {id: crypto.randomUUID(), name:"Lovable", url:"https://lovable.dev/", cat:"codigo", color:"#ec4899", icon:"LOV"},
+      {id: crypto.randomUUID(), name:"Recraft AI", url:"https://www.recraft.ai/", cat:"imagem", color:"#7c3aed", icon:"REC"},
+      {id: crypto.randomUUID(), name:"CapCut", url:"https://www.capcut.com/", cat:"util", color:"#06b6d4", icon:"CAP"}
     ];
 
     function safeHost(url){ 
@@ -709,23 +725,67 @@
       } 
     }
 
+    function normalizeUrl(url){
+      let u = String(url || "").trim();
+      if(!u) return "";
+      // Facilita quando digitar apenas dominio.com: mantém o item e completa com https://
+      if(!/^https?:\/\//i.test(u)) u = "https://" + u.replace(/^\/+/, "");
+      return u;
+    }
+
+    function itemKey(it){
+      try{
+        const u = new URL(normalizeUrl(it.url));
+        return (u.host.replace(/^www\./, "") + u.pathname.replace(/\/$/, "")).toLowerCase();
+      }catch(e){
+        return String(it.name || "").trim().toLowerCase();
+      }
+    }
+
+    function normalizeItem(x){
+      const url = normalizeUrl(x.url || "");
+      return {
+        id: (x.id && String(x.id)) || crypto.randomUUID(),
+        name: String(x.name || "IA").trim() || "IA",
+        url: url,
+        cat: (x.cat==="texto"||x.cat==="imagem"||x.cat==="codigo"||x.cat==="util") ? x.cat : "texto",
+        color: String(x.color || "#10b981"),
+        icon: String(x.icon || "AI").slice(0,3).toUpperCase(),
+        host: safeHost(url),
+      };
+    }
+
+    function mergeItems(savedList){
+      // Primeiro mantém tudo que você já adicionou/editou no navegador.
+      const merged = (Array.isArray(savedList) ? savedList : [])
+        .map(normalizeItem)
+        .filter(x => /^https?:\/\//i.test(x.url));
+
+      const seen = new Set(merged.map(itemKey));
+
+      // Depois acrescenta automaticamente qualquer site novo que entrou no código padrão.
+      DEFAULT_ITEMS.map(normalizeItem).forEach(def => {
+        const key = itemKey(def);
+        if(key && !seen.has(key)){
+          merged.push(def);
+          seen.add(key);
+        }
+      });
+
+      return merged;
+    }
+
     function loadItems(){
       try{
         const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return DEFAULT_ITEMS.map(x => ({ ...x, host: safeHost(x.url) }));
+        if(!raw) return mergeItems([]);
         const data = JSON.parse(raw);
         if(!Array.isArray(data)) throw new Error("invalid");
-        return data.map(x => ({
-          id: (x.id && String(x.id)) || crypto.randomUUID(),
-          name: String(x.name || "IA"),
-          url: String(x.url || ""),
-          cat: (x.cat==="texto"||x.cat==="imagem"||x.cat==="codigo"||x.cat==="util") ? x.cat : "texto",
-          color: String(x.color || "#10b981"),
-          icon: String(x.icon || "AI").slice(0,3).toUpperCase(),
-          host: safeHost(String(x.url || "")),
-        })).filter(x => x.url.startsWith("http"));
+        const merged = mergeItems(data);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        return merged;
       }catch(e){
-        return DEFAULT_ITEMS.map(x => ({ ...x, host: safeHost(x.url) }));
+        return mergeItems([]);
       }
     }
 
@@ -947,12 +1007,12 @@
 
     document.getElementById("btnSave").addEventListener("click", () => {
       const name = (fName.value || "").trim();
-      const url = (fUrl.value || "").trim();
+      const url = normalizeUrl((fUrl.value || "").trim());
       const cat = fCat.value;
       const color = (fColor.value || "").trim() || "#10b981";
       const icon = (fIcon.value || "AI").trim().slice(0,3).toUpperCase();
       if(!name){ toast("Preencha o nome."); return; }
-      if(!url || !url.startsWith("http")){ toast("Link deve começar com https://"); return; }
+      if(!url || !/^https?:\/\//i.test(url)){ toast("Link inválido."); return; }
       if(editingId){
         items = items.map(it => it.id === editingId ? {...it, name, url, cat, color, icon, host: safeHost(url)} : it);
         toast("IA atualizada.");
@@ -999,15 +1059,7 @@
           try{
             const data = JSON.parse(reader.result);
             if(!Array.isArray(data)) throw new Error("Formato inválido");
-            items = data.map(x => ({
-              id: (x.id && String(x.id)) || crypto.randomUUID(),
-              name: String(x.name || "IA"),
-              url: String(x.url || ""),
-              cat: (x.cat==="texto"||x.cat==="imagem"||x.cat==="codigo"||x.cat==="util") ? x.cat : "texto",
-              color: String(x.color || "#10b981"),
-              icon: String(x.icon || "AI").slice(0,3).toUpperCase(),
-              host: safeHost(String(x.url || "")),
-            })).filter(x => x.url.startsWith("http"));
+            items = mergeItems(data);
             saveItems(items);
             render();
             toast("Importado com sucesso.");
@@ -1022,7 +1074,7 @@
 
     document.getElementById("btnReset").addEventListener("click", () => {
       if(!confirm("Restaurar lista padrão? Isso vai apagar todos os seus links adicionados!")) return;
-      items = DEFAULT_ITEMS.map(x => ({ ...x, host: safeHost(x.url) }));
+      items = mergeItems([]);
       saveItems(items);
       render();
       toast("Lista padrão restaurada!");
